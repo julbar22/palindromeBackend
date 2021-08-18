@@ -9,8 +9,15 @@ app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 
-app.get('/', (req, res) => {
-    res.status(200).json({ result: 'El servidor funciona' });
+app.get('/iecho', (req, res) => {
+    const { text } = req.query;
+    if (text) {
+        const textClean =text.split(" ").join('').toLowerCase();
+        const reversedText = textClean.split('').reverse().join('');
+        res.status(200).json({ text: reversedText, palindrome: textClean === reversedText });
+    } else {
+        res.status(400).json({ error: 'no text' });
+    }
 });
 
 app.listen(PORT, () => {
