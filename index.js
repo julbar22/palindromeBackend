@@ -9,17 +9,27 @@ app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 
+/**
+ * El codigo cataloga como palindromos todo aquellos con las mismas letras,
+ * no tiene en cuenta acentos o signos de puntuacion.
+ */
 app.get('/iecho', (req, res) => {
     const { text } = req.query;
     if (text) {
-        const textClean =text.split(" ").join('').toLowerCase();
+        const textClean = text.split(" ").join('')
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-zA-Z]/g, "");
         const reversedText = textClean.split('').reverse().join('');
-        res.status(200).json({ text: reversedText, palindrome: textClean === reversedText });
-    } else {
-        res.status(400).json({ error: 'no text' });
+        return res.status(200).json({ text: reversedText, palindrome: textClean === reversedText });
     }
+    return res.status(400).json({ error: 'no text' });
+
 });
 
 app.listen(PORT, () => {
-    console.log(`El servidor esta funcionando en el puerto ${PORT}`);
+    console.log(`server working in port ${PORT}`);
 })
+
+
+module.exports = app;
