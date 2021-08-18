@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node .",
     "dev": "nodemon .",
-    "test": "mocha *.test.js"
+    "test": "mocha ./tests/*.test.js"
   },
   "author": "Julian Barbosa",
   "license": "ISC",
